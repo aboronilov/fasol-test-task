@@ -6,7 +6,7 @@ class Sender(models.Model):
     start = models.DateTimeField(verbose_name='Sending starts at')
     finish = models.DateTimeField(verbose_name='Sending finishes at')
     tag = models.CharField(verbose_name='Filter tag', max_length=32, blank=True, null=True)
-    operpator_code = models.CharField(verbose_name='Operator code filter', blank=True, null=True, max_length=3)
+    operator_code = models.CharField(verbose_name='Operator code filter', blank=True, null=True, max_length=3)
 
     def __str__(self):
         return f'Sending with id - {self.id} and content - {self.content}'

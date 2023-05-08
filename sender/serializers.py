@@ -1,11 +1,14 @@
 from rest_framework import serializers
 from .models import Sender
 from django.core.exceptions import ValidationError
-from django.utils.timezone import now
+from django.utils import timezone
 
 class SenderSerializer(serializers.ModelSerializer):
-    to_send = serializers.SerializerMethodField()
-
+    content = serializers.ReadOnlyField()
+    start = serializers.ReadOnlyField()
+    finish = serializers.ReadOnlyField()
+    tag = serializers.ReadOnlyField()
+    operator_code = serializers.ReadOnlyField()
     class Meta:
         model = Sender
         fields = [
@@ -14,19 +17,19 @@ class SenderSerializer(serializers.ModelSerializer):
             "start",
             "finish",
             "tag",
-            "operpator_code"
+            "operator_code"
         ]
 
     def validate(self, attrs):
-        current_time = now()
-        if current_time > attrs["finish"]:
+        if attrs["finish"] <= timezone.now():
             raise ValidationError("Sending date is later the current date")
         
         if attrs["start"] >= attrs["finish"]:
             raise ValidationError("Sending start date is later or equal than the end")
         
-        if len(attrs["operpator_code"]) != 3:
-            raise ValidationError("Operpator code should consist of 3 symbols")
+        if len(attrs["operator_code"]):
+            if len(attrs["operator_code"]) != 3:
+                raise ValidationError("Operpator code should consist of 3 symbols")
         
         return super().validate(attrs)
 

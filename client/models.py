@@ -9,8 +9,13 @@ phone_regex = RegexValidator(regex=r'^7\d{10}$',
 
 class Client(models.Model):
     phone = models.CharField(verbose_name='Phone number', validators=[phone_regex], unique=True, max_length=11)
+    operator_code = models.CharField(verbose_name='Operator code', max_length=3, editable=False)
     tag = models.CharField(verbose_name='Search tags', max_length=100, blank=True)
-    timezone = models.CharField(verbose_name='Time zone', max_length=32, choices=TIMEZONE_CHOICES, default='UTC')    
+    timezone = models.CharField(verbose_name='Time zone', max_length=32, choices=TIMEZONE_CHOICES, default='UTC') 
+
+    def save(self, *args, **kwargs):
+        self.operator_code = self.phone[1:4]
+        return super(Client, self).save(*args, **kwargs)   
   
     def __str__(self):
         return f'Client with id - {self.id} and number - {self.phone}'
