@@ -1,11 +1,6 @@
 from django.db import models
 from sender.models import Sender
 from client.models import Client
-from client.serializers import ClientSerializer
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from django.db.models import Q
-from .tasks import send_message
 
 
 class Message(models.Model):
@@ -21,45 +16,4 @@ class Message(models.Model):
         verbose_name = 'Message'
         verbose_name_plural = 'Messages'
 
-@receiver(post_save, sender=Sender)    
-def sender_created_handler(sender, instance, created, *args, **kwargs):
-    clients = Client.objects.all()
-    if instance.tag or instance.operator_code is not None:
-        lookup = (
-            Q(tag=instance.tag) |
-            Q(operator_code=instance.operator_code)
-        )
-        clients = Client.objects.filter(lookup)
-    for client in clients:
-        # если рассылка только создана - значит сообщения создаются впервые
-        if created:
-            message = Message.objects.create(
-                mailer=instance,
-                client=client
-            )
-            message.save()
 
-            data = {
-                "id": message.id,
-                "phone": client.phone,
-                "text": instance.content
-            }
-            send_message(data=data, client_id=client.id, sender_id=instance.id)
-        # если редактируется, значит существующие сообщения тоже нужно редактировать
-        else:
-            messages = Message.objects.filter(
-                mailer=instance,
-                client=client
-            )
-            for message in messages:
-                message.sender = sender
-                message.cilent = client
-                message.is_send = False
-                message.save()
-
-                data = {
-                    "id": message.id,
-                    "phone": client.phone,
-                    "text": instance.content
-                }
-                send_message(data=data, client_id=client.id, sender_id=instance.id)
