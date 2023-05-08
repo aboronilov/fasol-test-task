@@ -136,3 +136,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MESSAGE_SENDER_URL = env('URL')
 
 SENDER_TOKEN = env('TOKEN')
+
+# RABBITMQ = {
+#     "PROTOCOL": "amqp", # in prod change with "amqps"
+#     "HOST": env("RABBITMQ_HOST", "localhost"),
+#     "PORT": env("RABBITMQ_PORT", 5672),
+#     "USER": env("RABBITMQ_USER", "guest"),
+#     "PASSWORD": env("RABBITMQ_PASSWORD", "guest"),
+# }
+
+# CELERY_BROKER_URL = f"{RABBITMQ['PROTOCOL']}://{RABBITMQ['USER']}:{RABBITMQ['PASSWORD']}@{RABBITMQ['HOST']}:{RABBITMQ['PORT']}"

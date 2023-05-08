@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from .views import ClientViewSet
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register('client', ClientViewSet, basename="client")
 
 app_name = "client"

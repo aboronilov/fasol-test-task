@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from .views import MessageViewSet
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register('message', MessageViewSet, basename="message")
 
 app_name = "message"

@@ -3,7 +3,7 @@ from rest_framework import routers
 
 from .views import SenderViewSet
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register('sender', SenderViewSet, basename="sender")
 
 app_name = "sender"

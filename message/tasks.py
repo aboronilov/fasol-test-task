@@ -1,9 +1,7 @@
 from notification.celery import app
 from .models import Message
-from time import sleep
 from django.conf import settings
 import requests 
-from requests import exceptions
 import json
 
 
@@ -21,7 +19,7 @@ def send_message(self, message_id, client_id, text):
     }
 
     try:
-        requests.post(url=url, headers=headers, data=json.dumps(data))
+        response = requests.post(url=url, headers=headers, data=json.dumps(data))
     except Exception:
         # logger
         self.retry(coundtdown=5, **self.request.retries)
@@ -30,3 +28,5 @@ def send_message(self, message_id, client_id, text):
         message.is_send = True
         message.save()
         # logger
+    
+    return('sender', response.status_code)
