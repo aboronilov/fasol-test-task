@@ -7,8 +7,8 @@ from requests import exceptions
 import json
 
 
-@app.task
-def send_message(message_id, client_id, text):
+@app.task(name="send.message", bind=True, max_retries=10)
+def send_message(self, message_id, client_id, text):
     headers = {
         'Authorization': f'Bearer {settings.SENDER_TOKEN}',
         'Content-Type': 'application/json'
@@ -20,20 +20,13 @@ def send_message(message_id, client_id, text):
         "text": text
     }
 
-    response = requests.post(url=url, headers=headers, data=json.dumps(data))
-    if response.status_code != 200:
+    try:
+        requests.post(url=url, headers=headers, data=json.dumps(data))
+    except Exception:
         # logger
-        for _ in range(5):
-            try:
-                response = requests.post(url=url, headers=headers, data=json.dumps(data) ,timeout=10)
-            except exceptions.ConnectionError:
-                sleep(15)
-            except exceptions.Timeout:
-                sleep(30)
-            else:
-                # logger
-                break
-    
-    message = Message.objects.get(pk=data["id"])
-    message.is_send = True
-    message.save()
+        self.retry(coundtdown=5, **self.request.retries)
+    else:
+        message = Message.objects.get(pk=data["id"])
+        message.is_send = True
+        message.save()
+        # logger

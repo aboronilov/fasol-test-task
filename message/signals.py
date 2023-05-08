@@ -10,6 +10,8 @@ from django.utils import timezone
 @receiver(post_save, sender=Sender, dispatch_uid="handle_sender_create")    
 def handle_sender_create(sender, instance, created, *args, **kwargs):
     current_time = timezone.now()
+    print(current_time)
+    print(instance.start)
     clients = Client.objects.all()
     if instance.tag is not None or instance.operator_code is not None:
         lookup = (
@@ -31,7 +33,7 @@ def handle_sender_create(sender, instance, created, *args, **kwargs):
             if instance.start <= current_time <= instance.finish:
                 send_message.delay(message.pk, client.phone, instance.content)
             else:
-                send_message.apply_async(message.pk, client.phone, instance.content, eta=instance.start)
+                send_message.apply_async((message.pk, client.phone, instance.content), eta=instance.start)
         # если редактируется, значит существующие сообщения тоже нужно редактировать
         else:
             messages = Message.objects.filter(
