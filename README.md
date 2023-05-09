@@ -9,7 +9,22 @@
 * [Redis](https://redis.io/)
 
 
-## Приложение развернуто [здесь](https://nsign-test-task.onrender.com/) 
+## Приложение развернуто [здесь](https://fasol-test.onrender.com/api/) 
+
+Для проверки функионала необходимо клонировать репозиторий, создать и активировать окружение, установить зависимости
+
+```git clone https://github.com/aboronilov/fasol-test-task/```
+```cd ./fasol-test-task```
+```python -m venv venv```
+```pip install -r requirements.txt```
+```cd ./notification```
+```touch .env```
+
+Так как брокер сообщений Redis уже развернут, предлагаю вставить в файл .env строку:
+```CELERY_BROKER_URL=redis://default:uEfcRwZLZCtBNbTECANL@containers-us-west-2.railway.app:6262```
+
+Запустить
+```celery -A notification worker -l info```
 
 ### Основное ТЗ выполнено. Дополнительные реализовано
 
@@ -19,7 +34,7 @@
 
 2. Документация по использованию API
 
-3. Подготовлена статистика по рассылкам на endpoint **** - при переходе на неё на указанный в настройках email отправляется статистика по отправкам
+3. Подготовлена статистика по рассылкам на endpoint **/message/stat/** - при переходе на неё на указанный в .env email дублируется статистика по отправкам
 
 ![Landing page](https://raw.githubusercontent.com/aboronilov/fasol-test-task/main/static/img/email.png)
 
