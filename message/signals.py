@@ -1,5 +1,5 @@
 from .models import Message
-from sender.models import Sender
+from mailer.models import Mailer
 from client.models import Client
 from django.dispatch import receiver
 from django.db.models.signals import post_save
@@ -7,11 +7,9 @@ from django.db.models import Q
 from message.tasks import send_message
 from django.utils import timezone
 
-@receiver(post_save, sender=Sender, dispatch_uid="handle_sender_create")    
-def handle_sender_create(sender, instance, created, *args, **kwargs):
+@receiver(post_save, sender=Mailer, dispatch_uid="handle_mailer_create")    
+def handle_mailer_create(sender, instance, created, *args, **kwargs):
     current_time = timezone.now()
-    print(current_time)
-    print(instance.start)
     clients = Client.objects.all()
     if instance.tag is not None or instance.operator_code is not None:
         lookup = (

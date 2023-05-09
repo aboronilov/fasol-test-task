@@ -9,7 +9,7 @@ class MessageSerizlier(serializers.ModelSerializer):
             "id",
             "created_at",
             "is_send",
-            "sender",
+            "mailer",
             "client"
         ]
 

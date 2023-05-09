@@ -7,8 +7,7 @@ class ClientTest(APITestCase):
     def setUp(self):
         self.url = reverse('client:client-list')
 
-    def test_user_created_with_correct_data(self):
-        
+    def test_user_created_with_correct_data(self):        
         data = {
             'phone': '79001234567',
             'timezone': 'Europe/Moscow',

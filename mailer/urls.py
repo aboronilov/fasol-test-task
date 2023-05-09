@@ -1,12 +1,12 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from .views import SenderViewSet
+from .views import MailerViewSet
 
 router = routers.DefaultRouter()
-router.register('sender', SenderViewSet, basename="sender")
+router.register('mailer', MailerViewSet, basename="mailer")
 
-app_name = "sender"
+app_name = "mailer"
 urlpatterns = [
     path("", include(router.urls))
 ]

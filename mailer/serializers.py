@@ -1,16 +1,16 @@
 from rest_framework import serializers
-from .models import Sender
+from .models import Mailer
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
-class SenderSerializer(serializers.ModelSerializer):
+class MailerSerializer(serializers.ModelSerializer):
     content = serializers.ReadOnlyField()
     start = serializers.ReadOnlyField()
     finish = serializers.ReadOnlyField()
     tag = serializers.ReadOnlyField()
     operator_code = serializers.ReadOnlyField()
     class Meta:
-        model = Sender
+        model = Mailer
         fields = [
             "id",
             "content",

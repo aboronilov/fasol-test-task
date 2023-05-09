@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Sender(models.Model):
+class Mailer(models.Model):
     content = models.TextField(verbose_name='Message content') 
     start = models.DateTimeField(verbose_name='Sending starts at')
     finish = models.DateTimeField(verbose_name='Sending finishes at')
@@ -12,5 +12,5 @@ class Sender(models.Model):
         return f'Sending with id - {self.id} and content - {self.content}'
     
     class Meta:
-        verbose_name = 'Sender'
-        verbose_name_plural = 'Sender'
+        verbose_name = 'Mailer'
+        verbose_name_plural = 'Mailers'

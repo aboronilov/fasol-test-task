@@ -7,7 +7,7 @@ import json
 
 logger = get_task_logger(__name__)
 
-@app.task(name="send.message", bind=True, max_retries=10)
+@app.task(name="send.message", bind=True, retry_backoff=True)
 def send_message(self, message_id, client_id, text):
     headers = {
         'Authorization': f'Bearer {settings.SENDER_TOKEN}',
@@ -24,11 +24,11 @@ def send_message(self, message_id, client_id, text):
         response = requests.post(url=url, headers=headers, data=json.dumps(data))
     except Exception:
         logger.error(f"Message with id {message_id} is not sent due to server error on sender side, retrying...")
-        self.retry(coundtdown=5, **self.request.retries)
+        self.retry(coundtdown=5)
     else:
         message = Message.objects.get(pk=data["id"])
         message.is_send = True
         message.save()
         logger.info(f"Message with id {message_id} is successfully sent")
     
-    return('sender', response.status_code)
+    return('mailer', response.status_code)
