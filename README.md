@@ -11,6 +11,10 @@
 
 ## Приложение развернуто [здесь](https://fasol-test.onrender.com/api/) 
 
+При добавлении новых сущностей в таблицу Mailer авторматически создаются новые сущности таблицы Message, которые фильтруют клиентов по указанным критериям. Если текущее время попадатает в интервал рассылки - она происходит немедленно. В противном случае - делается отсрочка до начала рассылки
+
+![Landing page](https://raw.githubusercontent.com/aboronilov/fasol-test-task/main/static/img/celery.png)
+
 Для проверки функионала необходимо клонировать репозиторий, создать и активировать окружение, установить зависимости
 
 ```git clone https://github.com/aboronilov/fasol-test-task/```
@@ -23,18 +27,19 @@
 Так как брокер сообщений Redis уже развернут, предлагаю вставить в файл .env строку:
 ```CELERY_BROKER_URL=redis://default:uEfcRwZLZCtBNbTECANL@containers-us-west-2.railway.app:6262```
 
-Запустить
+Запустить celery и flower
+```cd ..```
 ```celery -A notification worker -l info```
 
 ### Основное ТЗ выполнено. Дополнительные реализовано
 
-1. Код покрыт юнит тестами
+1. Код покрыт юнит тестами 
 
 ![Landing page](https://raw.githubusercontent.com/aboronilov/fasol-test-task/main/static/img/tests.png)
 
-2. Документация по использованию API
+2. Документация по использованию API [swagger](https://fasol-test.onrender.com/swagger/) или [redoc](https://fasol-test.onrender.com/redoc/)
 
-3. Подготовлена статистика по рассылкам на endpoint **/message/stat/** - при переходе на неё на указанный в .env email дублируется статистика по отправкам
+3. Подготовлена статистика по рассылкам на endpoint **/message/stat/** - при переходе на него на указанный в .env email дублируется статистика по отправкам
 
 ![Landing page](https://raw.githubusercontent.com/aboronilov/fasol-test-task/main/static/img/email.png)
 
