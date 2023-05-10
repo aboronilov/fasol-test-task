@@ -21,6 +21,7 @@
 cd ./fasol-test-task
 python -m venv venv
 pip install -r requirements.txt
+cd ./notification
 touch .env```
 
 Так как брокер сообщений Redis уже развернут, предлагаю вставить в файл .env строку:
