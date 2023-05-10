@@ -11,27 +11,26 @@
 
 ## Приложение развернуто [здесь](https://fasol-test.onrender.com/api/) 
 
-При добавлении новых сущностей в таблицу Mailer авторматически создаются новые сущности таблицы Message, которые фильтруют клиентов по указанным критериям. Если текущее время попадатает в интервал рассылки - она происходит немедленно. В противном случае - делается отсрочка до начала рассылки
+При добавлении новых сущностей в таблицу Mailer автоматически создаются новые сущности таблицы Message, которые фильтруют клиентов по указанным критериям. Если текущее время попадатает в интервал рассылки - она происходит немедленно. В противном случае - делается отсрочка до начала рассылки
 
 ![Landing page](https://raw.githubusercontent.com/aboronilov/fasol-test-task/main/static/img/celery.png)
 
 Для проверки функионала необходимо клонировать репозиторий, создать и активировать окружение, установить зависимости
 
-```git clone https://github.com/aboronilov/fasol-test-task/```
-```cd ./fasol-test-task```
-```python -m venv venv```
-```pip install -r requirements.txt```
-```cd ./notification```
-```touch .env```
+```git clone https://github.com/aboronilov/fasol-test-task/
+cd ./fasol-test-task
+python -m venv venv
+pip install -r requirements.txt
+touch .env```
 
 Так как брокер сообщений Redis уже развернут, предлагаю вставить в файл .env строку:
 ```CELERY_BROKER_URL=redis://default:uEfcRwZLZCtBNbTECANL@containers-us-west-2.railway.app:6262```
 
 Запустить celery и flower
-```cd ..```
-```celery -A notification worker -l info```
+```cd ..
+celery -A notification worker -l info```
 
-### Основное ТЗ выполнено. Дополнительные реализовано
+### Основное ТЗ выполнено. Дополнительно реализован функционал:
 
 1. Код покрыт юнит тестами 
 
@@ -46,3 +45,5 @@
 4. Результаты рассылки логируются
 
 5. Если внешний сервер рассылки не отвечает по каким-либо причинам, эта ошибка обработается и рассылка не будет прервана
+
+6. Деплой приложения (сам сервер, база данных и брокер сообщений)
